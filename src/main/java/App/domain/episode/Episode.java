@@ -1,12 +1,15 @@
 package App.domain.episode;
 
 import App.domain.season.Season;
+import App.domain.value_objects.EpisodeID;
+import App.utils.Validator;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Episode {
 
-    private int id;
+    private EpisodeID id;
     private int episodeNumber;
     private String title;
     private String description;
@@ -16,17 +19,22 @@ public class Episode {
 
     /**
      * Constructor for Episode
-     * @param id id
+     *
      * @param episodeNumber episode number
-     * @param title title
-     * @param description description
-     * @param airdate airdate
-     * @param season season
+     * @param title         title
+     * @param description   description
+     * @param airdate       airdate
+     * @param season        season
      */
 
-    Episode(int id, int episodeNumber, String title, String description, Date airdate, Season season) {
+    Episode(int episodeNumber, String title, String description, Date airdate, Season season) {
 
-        this.id = id;
+        generateID();
+        Validator.validateNotNull(episodeNumber, "Episode number");
+        Validator.validateNotNull(title, "Title");
+        Validator.validateNotNull(description, "Description");
+        Validator.validateNotNull(airdate, "Airdate");
+        Validator.validateNotNull(season, "Season");
         this.episodeNumber = episodeNumber;
         this.title = title;
         this.description = description;
@@ -35,16 +43,45 @@ public class Episode {
 
     }
 
+    Episode(EpisodeID episodeID, int episodeNumber, String title, String description, Date airdate, Season season) {
+
+        Validator.validateNotNull(episodeID, "Episode ID");
+        Validator.validateNotNull(episodeNumber, "Episode number");
+        Validator.validateNotNull(title, "Title");
+        Validator.validateNotNull(description, "Description");
+        Validator.validateNotNull(airdate, "Airdate");
+        Validator.validateNotNull(season, "Season");
+        this.id = episodeID;
+        this.episodeNumber = episodeNumber;
+        this.title = title;
+        this.description = description;
+        this.airdate = airdate;
+        this.season = season;
+
+    }
+
+
+
+
+    /**
+     * Generates a unique identifier for the House instance.
+     */
+    private void generateID() {
+        id = new EpisodeID(UUID.randomUUID().toString());
+    }
+
     /**
      * Get the id of the episode
+     *
      * @return id
      */
-    public int getId() {
+    public EpisodeID getId() {
         return id;
     }
 
     /**
      * Get the title of the episode
+     *
      * @return title
      */
     public int getEpisodeNumber() {
@@ -53,6 +90,7 @@ public class Episode {
 
     /**
      * Get the title of the episode
+     *
      * @return title
      */
     public String getTitle() {
@@ -61,6 +99,7 @@ public class Episode {
 
     /**
      * Get the description of the episode
+     *
      * @return description
      */
     public String getDescription() {
@@ -69,6 +108,7 @@ public class Episode {
 
     /**
      * Get the airdate of the episode
+     *
      * @return airdate
      */
     public Date getAirdate() {
@@ -77,6 +117,7 @@ public class Episode {
 
     /**
      * Get the season of the episode
+     *
      * @return season
      */
     public Season getSeason() {
@@ -85,6 +126,7 @@ public class Episode {
 
     /**
      * Returns a string representation of the episode
+     *
      * @return string
      */
     public String toString() {
@@ -95,5 +137,16 @@ public class Episode {
                 ", description=" + description +
                 ", airdate=" + airdate +
                 ", season=" + season;
+    }
+
+    public boolean equals(Object o) {
+        if (o instanceof Episode houseObject) {
+            return id.equals(houseObject.id);
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return id.hashCode();
     }
 }

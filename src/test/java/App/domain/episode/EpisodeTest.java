@@ -1,10 +1,12 @@
 package App.domain.episode;
 
-import App.domain.reality_show.RealityShow;
 import App.domain.season.Season;
+import App.domain.value_objects.EpisodeID;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedConstruction;
 
-import java.util.ArrayList;
+import static org.mockito.Mockito.*;
+
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,38 +19,22 @@ class EpisodeTest {
     @Test
     void shouldInstantiateEpisode_whenHasValidParameters() {
         //Arrange
-
-        RealityShow realityShow = new RealityShow(
-                1,
-                "Survivor",
-                "A reality show about survival",
-                "Adventure",
-                new Date(),
-                new ArrayList<>(),
-                "https://example.com/image.jpg",
-                "Ongoing"
-        );
-
-        Season season = new Season(
-                1,
-                1,
-                new ArrayList<>(),
-                realityShow
-        );
-
+        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
 
-        Episode episode = new Episode(
-                1,
-                1,
-                "Pilot",
-                "The very first episode",
-                airdate,
-                season
-        );
+        try (MockedConstruction<EpisodeID> episodeID = mockConstruction(EpisodeID.class)) {
 
-        //Act + Assert
-        assertNotNull(episode);
+            Episode episode = new Episode(
+                    1,
+                    "Pilot",
+                    "The very first episode",
+                    airdate,
+                    doubleSeason
+            );
+
+            //Act + Assert
+            assertNotNull(episode);
+        }
     }
 
     /**
@@ -57,42 +43,30 @@ class EpisodeTest {
     @Test
     void shouldReturnId_whenGetIdIsCalled() {
         //Arrange
-        RealityShow realityShow = new RealityShow(
-                1,
-                "Survivor",
-                "A reality show about survival",
-                "Adventure",
-                new Date(),
-                new ArrayList<>(),
-                "https://example.com/image.jpg",
-                "Ongoing"
-        );
-
-        Season season = new Season(
-                1,
-                1,
-                new ArrayList<>(),
-                realityShow
-        );
-
+        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
 
-        Episode episode = new Episode(
-                1,
-                1,
-                "Pilot",
-                "The very first episode",
-                airdate,
-                season
-        );
 
-        int expected = 1;
+        try (MockedConstruction<EpisodeID> episodeID = mockConstruction(EpisodeID.class)) {
+            Episode episode = new Episode(
+                    1,
+                    "Pilot",
+                    "The very first episode",
+                    airdate,
+                    doubleSeason
+            );
 
-        //Act
-        int result = episode.getId();
+            EpisodeID expectedEpisodeID = episodeID.constructed().get(0);
 
-        //Assert
-        assertEquals(expected, result);
+            int instantiatedInstance = episodeID.constructed().size();
+
+            //Act
+            EpisodeID episodeIDReturned = episode.getId();
+
+            //Assert
+            assertEquals(expectedEpisodeID, episodeIDReturned);
+            assertEquals(1, instantiatedInstance);
+        }
     }
 
     /**
@@ -101,34 +75,15 @@ class EpisodeTest {
     @Test
     void shouldReturnEpisodeNumber_whenGetEpisodeNumberIsCalled() {
         //Arrange
-
-        RealityShow realityShow = new RealityShow(
-                1,
-                "Survivor",
-                "A reality show about survival",
-                "Adventure",
-                new Date(),
-                new ArrayList<>(),
-                "https://example.com/image.jpg",
-                "Ongoing"
-        );
-
-        Season season = new Season(
-                1,
-                1,
-                new ArrayList<>(),
-                realityShow
-        );
-
+        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
 
         Episode episode = new Episode(
                 1,
-                1,
                 "Pilot",
                 "The very first episode",
                 airdate,
-                season
+                doubleSeason
         );
 
         int expected = 1;
@@ -146,34 +101,15 @@ class EpisodeTest {
     @Test
     void shouldReturnTitle_whenGetTitleIsCalled() {
         //Arrange
-
-        RealityShow realityShow = new RealityShow(
-                1,
-                "Survivor",
-                "A reality show about survival",
-                "Adventure",
-                new Date(),
-                new ArrayList<>(),
-                "https://example.com/image.jpg",
-                "Ongoing"
-        );
-
-        Season season = new Season(
-                1,
-                1,
-                new ArrayList<>(),
-                realityShow
-        );
-
+        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
 
         Episode episode = new Episode(
                 1,
-                1,
                 "Pilot",
                 "The very first episode",
                 airdate,
-                season
+                doubleSeason
         );
 
         String expected = "Pilot";
@@ -186,43 +122,20 @@ class EpisodeTest {
     }
 
     /**
-     * Should return airdate when getAirdate is called.
+     * Should return description when getDescription is called.
      */
     @Test
     void shouldReturnDescription_whenGetDescriptionIsCalled() {
         //Arrange
-
-
-        RealityShow realityShow = new RealityShow(
-                1,
-                "Survivor",
-                "A reality show about survival",
-                "Adventure",
-                new Date(),
-                new ArrayList<>(),
-                "https://example.com/image.jpg",
-                "Ongoing"
-        );
-
-
-        Season season = new Season(
-                1,
-                1,
-                new ArrayList<>(),
-                realityShow
-        );
-
-
+        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
 
-
         Episode episode = new Episode(
-                1,
                 1,
                 "Pilot",
                 "The very first episode",
                 airdate,
-                season
+                doubleSeason
         );
 
         String expected = "The very first episode";
@@ -240,35 +153,15 @@ class EpisodeTest {
     @Test
     void shouldReturnAirdate_whenGetAirdateIsCalled() {
         //Arrange
-
-        RealityShow realityShow = new RealityShow(
-                1,
-                "Survivor",
-                "A reality show about survival",
-                "Adventure",
-                new Date(),
-                new ArrayList<>(),
-                "https://example.com/image.jpg",
-                "Ongoing"
-        );
-
-
-        Season season = new Season(
-                1,
-                1,
-                new ArrayList<>(),
-                realityShow
-        );
-
+        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
 
         Episode episode = new Episode(
                 1,
-                1,
                 "Pilot",
                 "The very first episode",
                 airdate,
-                season
+                doubleSeason
         );
 
         //Act
@@ -284,41 +177,22 @@ class EpisodeTest {
     @Test
     void shouldReturnSeason_whenGetSeasonIsCalled() {
         //Arrange
-
-        RealityShow realityShow = new RealityShow(
-                1,
-                "Survivor",
-                "A reality show about survival",
-                "Adventure",
-                new Date(),
-                new ArrayList<>(),
-                "https://example.com/image.jpg",
-                "Ongoing"
-        );
-
-        Season season = new Season(
-                1,
-                1,
-                new ArrayList<>(),
-                realityShow
-        );
-
+        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
 
         Episode episode = new Episode(
                 1,
-                1,
                 "Pilot",
                 "The very first episode",
                 airdate,
-                season
+                doubleSeason
         );
 
         //Act
         Season result = episode.getSeason();
 
         //Assert
-        assertEquals(season, result);
+        assertEquals(doubleSeason, result);
     }
 
     /**
@@ -327,49 +201,140 @@ class EpisodeTest {
     @Test
     void shouldReturnEpisodeInStringFormat_whenToStringIsCalled() {
         //Arrange
-
-        RealityShow realityShow = new RealityShow(
-                1,
-                "Survivor",
-                "A reality show about survival",
-                "Adventure",
-                new Date(),
-                new ArrayList<>(),
-                "https://example.com/image.jpg",
-                "Ongoing"
-        );
-
-        Season season = new Season(
-                1,
-                1,
-                new ArrayList<>(),
-                realityShow
-        );
-
+        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
 
-        Episode episode = new Episode(
-                1,
-                1,
-                "Pilot",
-                "The very first episode",
-                airdate,
-                season
-        );
+        try (MockedConstruction<EpisodeID> episodeID = mockConstruction(EpisodeID.class)) {
 
-        String expected = "Episode:" +
-                "id=1" +
-                ", episodeNumber=1" +
-                ", title=Pilot" +
-                ", description=The very first episode" +
-                ", airdate=" + airdate +
-                ", season=" + season;
+            Episode episode = new Episode(
+                    1,
+                    "Pilot",
+                    "The very first episode",
+                    airdate,
+                    doubleSeason
+            );
 
-        //Act
-        String result = episode.toString();
+            EpisodeID episodeIDDouble = episodeID.constructed().get(0);
 
-        //Assert
-        assertEquals(expected, result);
+
+            String expected = "Episode:" +
+                    "id=" + episodeIDDouble +
+                    ", episodeNumber=" + 1 +
+                    ", title=" + "Pilot" +
+                    ", description=" + "The very first episode" +
+                    ", airdate=" + airdate +
+                    ", season=" + doubleSeason;
+
+            //Act
+            String result = episode.toString();
+
+            //Assert
+            assertEquals(expected, result);
+        }
+    }
+
+
+    /**
+     * HashCode for entity is derived from his ID. To ensure that equals and hashCode are consistent
+     * we must ensure that hashCode is derived from the same property as equals.
+     */
+    @Test
+    void shouldReturnHashCodeLinkedToEpisodeID() {
+        //Arrange
+        Season doubleSeason = mock(Season.class);
+        Date airdate = new Date();
+
+        try (MockedConstruction<EpisodeID> episodeID = mockConstruction(EpisodeID.class)) {
+
+            Episode episode = new Episode(
+                    1,
+                    "Pilot",
+                    "The very first episode",
+                    airdate,
+                    doubleSeason
+            );
+
+            EpisodeID episodeIDDouble = episodeID.constructed().get(0);
+
+            int expected = episodeIDDouble.hashCode();
+
+            //Act
+            int result = episode.hashCode();
+
+            //Assert
+            assertEquals(expected, result);
+        }
+    }
+
+    /**
+     * Should return true when comparing same house.
+     */
+    @Test
+    void shouldReturnTrueWhenComparingTwoEqualEpisodes() {
+        //Arrange
+        Season doubleSeason = mock(Season.class);
+        Date airdate = new Date();
+        EpisodeID episodeIDDouble = mock(EpisodeID.class);
+
+        try (MockedConstruction<EpisodeID> episodeID = mockConstruction(EpisodeID.class)) {
+
+            Episode episode = new Episode(episodeIDDouble,
+                    1,
+                    "Pilot",
+                    "The very first episode",
+                    airdate,
+                    doubleSeason
+            );
+
+            Episode episode2 = new Episode(episodeIDDouble,
+                    1,
+                    "Pilot",
+                    "The very first episode",
+                    airdate,
+                    doubleSeason
+            );
+
+            //Act
+            boolean result = episode.equals(episode2);
+
+            //Assert
+            assertTrue(result);
+        }
+    }
+
+    /**
+     * Should return false when comparing different house.
+     */
+    @Test
+    void shouldReturnFalseWhenComparingDifferentEpisodes() {
+        //Arrange
+        Season doubleSeason = mock(Season.class);
+        Date airdate = new Date();
+
+        try (MockedConstruction<EpisodeID> episodeID = mockConstruction(EpisodeID.class)) {
+
+            Episode episode = new Episode(
+                    1,
+                    "Pilot",
+                    "The very first episode",
+                    airdate,
+                    doubleSeason
+            );
+
+            Episode episode2 = new Episode(
+                    2,
+                    "Pilot",
+                    "The very first episode",
+                    airdate,
+                    doubleSeason
+            );
+
+            //Act
+            boolean result = episode.equals(episode2);
+
+            //Assert
+            assertFalse(result);
+        }
     }
 
 
