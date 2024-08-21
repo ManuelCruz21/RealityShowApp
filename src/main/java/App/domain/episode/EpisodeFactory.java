@@ -1,7 +1,6 @@
 package App.domain.episode;
 
-import App.domain.season.Season;
-import App.domain.value_objects.EpisodeID;
+import App.domain.value_objects.*;
 
 import java.util.Date;
 
@@ -16,6 +15,6 @@ public interface EpisodeFactory {
      * @param season season
      * @return Episode
      */
-    Episode createEpisode(int episodeNumber, String title, String description, Date airdate, Season season);
+    Episode createEpisode(EpisodeNumber episodeNumber, EpisodeTitle title, EpisodeDescription description, Date airdate, SeasonID season);
 
 }

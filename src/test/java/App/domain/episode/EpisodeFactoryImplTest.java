@@ -1,7 +1,7 @@
 package App.domain.episode;
 
 import App.domain.season.Season;
-import App.domain.value_objects.EpisodeID;
+import App.domain.value_objects.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -18,14 +18,17 @@ class EpisodeFactoryImplTest {
     @Test
     void shouldCreateEpisode_whenHasValidParameters() {
         //Arrange
-        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
+        EpisodeNumber episodeNumber = mock(EpisodeNumber.class);
+        EpisodeTitle title = mock(EpisodeTitle.class);
+        EpisodeDescription description = mock(EpisodeDescription.class);
+        SeasonID seasonID = mock(SeasonID.class);
+        EpisodeID doubleEpisodeID = mock(EpisodeID.class);
 
         EpisodeFactoryImpl episodeFactory = new EpisodeFactoryImpl();
 
         //Act
-        Episode episode = episodeFactory.createEpisode(1, "Pilot", "The first episode", airdate, doubleSeason);
-
+        Episode episode = episodeFactory.createEpisode(doubleEpisodeID,episodeNumber, title, description, airdate, seasonID);
         //Assert
         assertNotNull(episode);
 
@@ -37,15 +40,17 @@ class EpisodeFactoryImplTest {
     @Test
     void shouldCreateEpisode_WhenCreateEpisodeIsCalledWithValidParametersAndEpisodeID() {
         //Arrange
-        Season doubleSeason = mock(Season.class);
         Date airdate = new Date();
+        EpisodeNumber episodeNumber = mock(EpisodeNumber.class);
+        EpisodeTitle title = mock(EpisodeTitle.class);
+        EpisodeDescription description = mock(EpisodeDescription.class);
+        SeasonID seasonID = mock(SeasonID.class);
         EpisodeID doubleEpisodeID = mock(EpisodeID.class);
 
         EpisodeFactoryImpl episodeFactory = new EpisodeFactoryImpl();
 
         //Act
-        Episode episode = episodeFactory.createEpisode(doubleEpisodeID, 1, "Pilot", "The first episode", airdate, doubleSeason);
-
+        Episode episode = episodeFactory.createEpisode(doubleEpisodeID, episodeNumber, title, description, airdate, seasonID);
         //Assert
         assertNotNull(episode);
 
@@ -59,13 +64,17 @@ class EpisodeFactoryImplTest {
     @Test
     void shouldThrowIllegalArgumentException_whenCreateEpisodeIsCalledWithNullSeason() {
         //Arrange
-        Season doubleSeason = null;
         Date airdate = new Date();
+        EpisodeNumber episodeNumber = mock(EpisodeNumber.class);
+        EpisodeTitle title = mock(EpisodeTitle.class);
+        EpisodeDescription description = mock(EpisodeDescription.class);
+        SeasonID seasonID = null;
+
 
         EpisodeFactoryImpl episodeFactory = new EpisodeFactoryImpl();
 
         //Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> episodeFactory.createEpisode(1, "Pilot", "The first episode", airdate, doubleSeason),
+        assertThrows(IllegalArgumentException.class, () -> episodeFactory.createEpisode(episodeNumber, title, description, airdate, seasonID),
                 "Factory should throw IllegalArgumentException for null Season.");
     }
 
@@ -77,13 +86,16 @@ class EpisodeFactoryImplTest {
     @Test
     void shouldThrowIllegalArgumentException_whenCreateEpisodeIsCalledWithNullAirdate() {
         //Arrange
-        Season doubleSeason = mock(Season.class);
         Date airdate = null;
+        EpisodeNumber episodeNumber = mock(EpisodeNumber.class);
+        EpisodeTitle title = mock(EpisodeTitle.class);
+        EpisodeDescription description = mock(EpisodeDescription.class);
+        SeasonID seasonID = mock(SeasonID.class);
 
         EpisodeFactoryImpl episodeFactory = new EpisodeFactoryImpl();
 
         //Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> episodeFactory.createEpisode(1, "Pilot", "The first episode", airdate, doubleSeason),
+        assertThrows(IllegalArgumentException.class, () -> episodeFactory.createEpisode(episodeNumber, title, description, airdate, seasonID),
                 "Factory should throw IllegalArgumentException for null Airdate.");
     }
 

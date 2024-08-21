@@ -1,7 +1,6 @@
 package App.domain.episode;
 
-import App.domain.season.Season;
-import App.domain.value_objects.EpisodeID;
+import App.domain.value_objects.*;
 import App.utils.Validator;
 
 import java.util.Date;
@@ -10,11 +9,11 @@ import java.util.UUID;
 public class Episode {
 
     private EpisodeID id;
-    private int episodeNumber;
-    private String title;
-    private String description;
+    private EpisodeNumber episodeNumber;
+    private EpisodeTitle title;
+    private EpisodeDescription description;
     private Date airdate;
-    private Season season;
+    private SeasonID seasonID;
 
 
     /**
@@ -24,43 +23,41 @@ public class Episode {
      * @param title         title
      * @param description   description
      * @param airdate       airdate
-     * @param season        season
+     * @param seasonID      season
      */
 
-    Episode(int episodeNumber, String title, String description, Date airdate, Season season) {
+    Episode(EpisodeNumber episodeNumber, EpisodeTitle title, EpisodeDescription description, Date airdate, SeasonID seasonID) {
 
         generateID();
         Validator.validateNotNull(episodeNumber, "Episode number");
         Validator.validateNotNull(title, "Title");
         Validator.validateNotNull(description, "Description");
         Validator.validateNotNull(airdate, "Airdate");
-        Validator.validateNotNull(season, "Season");
+        Validator.validateNotNull(seasonID, "Season");
         this.episodeNumber = episodeNumber;
         this.title = title;
         this.description = description;
         this.airdate = airdate;
-        this.season = season;
+        this.seasonID = seasonID;
 
     }
 
-    Episode(EpisodeID episodeID, int episodeNumber, String title, String description, Date airdate, Season season) {
+    Episode(EpisodeID episodeID, EpisodeNumber episodeNumber, EpisodeTitle title, EpisodeDescription description, Date airdate, SeasonID seasonID) {
 
         Validator.validateNotNull(episodeID, "Episode ID");
         Validator.validateNotNull(episodeNumber, "Episode number");
         Validator.validateNotNull(title, "Title");
         Validator.validateNotNull(description, "Description");
         Validator.validateNotNull(airdate, "Airdate");
-        Validator.validateNotNull(season, "Season");
+        Validator.validateNotNull(seasonID, "Season");
         this.id = episodeID;
         this.episodeNumber = episodeNumber;
         this.title = title;
         this.description = description;
         this.airdate = airdate;
-        this.season = season;
+        this.seasonID = seasonID;
 
     }
-
-
 
 
     /**
@@ -84,7 +81,7 @@ public class Episode {
      *
      * @return title
      */
-    public int getEpisodeNumber() {
+    public EpisodeNumber getEpisodeNumber() {
         return episodeNumber;
     }
 
@@ -93,7 +90,7 @@ public class Episode {
      *
      * @return title
      */
-    public String getTitle() {
+    public EpisodeTitle getTitle() {
         return title;
     }
 
@@ -102,7 +99,7 @@ public class Episode {
      *
      * @return description
      */
-    public String getDescription() {
+    public EpisodeDescription getDescription() {
         return description;
     }
 
@@ -120,8 +117,8 @@ public class Episode {
      *
      * @return season
      */
-    public Season getSeason() {
-        return season;
+    public SeasonID getSeasonID() {
+        return seasonID;
     }
 
     /**
@@ -136,9 +133,15 @@ public class Episode {
                 ", title=" + title +
                 ", description=" + description +
                 ", airdate=" + airdate +
-                ", season=" + season;
+                ", seasonID=" + seasonID;
     }
 
+    /**
+     * Equals method for Episode
+     *
+     * @param o Object
+     * @return boolean
+     */
     public boolean equals(Object o) {
         if (o instanceof Episode houseObject) {
             return id.equals(houseObject.id);
@@ -146,6 +149,11 @@ public class Episode {
         return false;
     }
 
+    /**
+     * HashCode method for Episode
+     *
+     * @return the hashcode as an int
+     */
     public int hashCode() {
         return id.hashCode();
     }
